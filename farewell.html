@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>时光告别信</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #111;
+            color: #fff;
+            font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            overflow-x: hidden;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        .container {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* 星空背景 */
+        #starfield {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+        
+        /* 主内容区 */
+        .content {
+            position: relative;
+            z-index: 1;
+            width: 90%;
+            max-width: 500px;
+            padding: 20px;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1s ease;
+        }
+        
+        /* 标题样式 */
+        .title {
+            font-size: 28px;
+            margin-bottom: 30px;
+            color: #FFD700;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+        
+        /* 消息文本 */
+        .message {
+            font-size: 18px;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 1s ease;
+        }
+        
+        /* 输入框 */
+        .input-box {
+            margin: 30px 0;
+            width: 100%;
+            display: none;
+        }
+        
+        textarea {
+            width: 100%;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 215, 0, 0.5);
+            border-radius: 8px;
+            padding: 10px;
+            color: #fff;
+            font-size: 16px;
+            resize: none;
+        }
+        
+        /* 按钮样式 */
+        .btn {
+            background: linear-gradient(135deg, #FF8C00, #FF4500);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 16px;
+            margin: 10px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 140, 0, 0.3);
+            transition: all 0.3s;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 140, 0, 0.4);
+        }
+        
+        .btn:active {
+            transform: translateY(1px);
+        }
+        
+        /* 照片回忆 */
+        .memory {
+            width: 80%;
+            margin: 20px auto;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            transform: scale(0.9);
+            transition: all 1s ease;
+        }
+        
+        .memory img {
+            width: 100%;
+            display: block;
+        }
+        
+        /* 落款 */
+        .signature {
+            margin-top: 40px;
+            font-style: italic;
+            color: #FFD700;
+            opacity: 0;
+            transition: all 1s ease;
+        }
+        
+        /* 动画效果 */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        /* 响应式调整 */
+        @media (max-width: 500px) {
+            .title { font-size: 24px; }
+            .message { font-size: 16px; }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="starfield"></canvas>
+    
+    <div class="container">
+        <div class="content">
+            <h1 class="title">时光告别信</h1>
+            
+            <div id="message-container">
+                <div class="message" data-delay="0">亲爱的朋友：</div>
+                <div class="message" data-delay="1">当这封信缓缓展开时，我们已站在了分别的路口</div>
+                <div class="message" data-delay="2">那些共同走过的日子，如同星辰般在记忆中闪烁</div>
+                
+                <div class="memory" data-delay="3">
+                    <img src="https://placeholder.pics/svg/300x200/DEDEDE/555555/记忆照片" alt="共同记忆">
+                </div>
+                
+                <div class="message" data-delay="4">记得第一次相遇时，你带着阳光般的笑容</div>
+                <div class="message" data-delay="5">如今回想起来，那些平凡的日常都变得珍贵</div>
+                <div class="message" data-delay="6">会议室里的头脑风暴，午休时的闲谈</div>
+                <div class="message" data-delay="7">加班后的夜宵，成功时的击掌</div>
+                
+                <div class="input-box" id="memory-input">
+                    <p>请写下你最想留住的回忆：</p>
+                    <textarea id="memory-text" placeholder="输入你的珍贵记忆..."></textarea>
+                    <button class="btn" id="save-btn">封存这段回忆</button>
+                </div>
+                
+                <div class="message" data-delay="8">离别不是终点，而是新旅程的开始</div>
+                <div class="message" data-delay="9">愿你在未来的日子里</div>
+                <div class="message" data-delay="10">保持热爱，奔赴下一场山海</div>
+                
+                <div class="signature" data-delay="11">
+                    <p>永远祝福你的</p>
+                    <p id="sign-name">[你的名字]</p>
+                </div>
+            </div>
+            
+            <button class="btn floating" id="start-btn" style="display: block;">开启告别仪式</button>
+        </div>
+    </div>
+
+    <script>
+        // 星空背景动画
+        const canvas = document.getElementById('starfield');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        // 创建星星
+        const stars = [];
+        const starCount = 200;
+        
+        for (let i = 0; i < starCount; i++) {
+            stars.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                radius: Math.random() * 1.5,
+                vx: Math.random() * 0.5 - 0.25,
+                vy: Math.random() * 0.5 - 0.25,
+                alpha: Math.random()
+            });
+        }
+        
+        // 动画星星
+        function animateStars() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = 'white';
+            
+            stars.forEach(star => {
+                ctx.globalAlpha = star.alpha;
+                ctx.beginPath();
+                ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+                ctx.fill();
+                
+                star.x += star.vx;
+                star.y += star.vy;
+                
+                if (star.x < 0 || star.x > canvas.width) star.vx = -star.vx;
+                if (star.y < 0 || star.y > canvas.height) star.vy = -star.vy;
+                
+                // 随机闪烁
+                if (Math.random() < 0.01) {
+                    star.alpha = Math.random();
+                }
+            });
+            
+            requestAnimationFrame(animateStars);
+        }
+        
+        animateStars();
+        
+        // 窗口大小调整
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+        
+        // 告别信动画
+        document.getElementById('start-btn').addEventListener('click', function() {
+            this.style.display = 'none';
+            document.querySelector('.content').style.opacity = 1;
+            document.querySelector('.content').style.transform = 'translateY(0)';
+            
+            // 获取当前用户名称（简化版）
+            const userName = localStorage.getItem('userName') || prompt('请输入你的名字:') || '朋友';
+            document.getElementById('sign-name').textContent = userName;
+            localStorage.setItem('userName', userName);
+            
+            // 逐步显示消息
+            const messages = document.querySelectorAll('.message, .memory, .signature');
+            let delay = 0;
+            
+            messages.forEach(msg => {
+                const msgDelay = parseInt(msg.getAttribute('data-delay')) * 1000;
+                delay = Math.max(delay, msgDelay);
+                
+                setTimeout(() => {
+                    msg.style.opacity = 1;
+                    msg.style.transform = msg.classList.contains('memory') ? 'scale(1)' : 'translateY(0)';
+                    
+                    // 显示输入框
+                    if (msg.id === 'memory-input') {
+                        setTimeout(() => {
+                            msg.style.display = 'block';
+                        }, 500);
+                    }
+                }, msgDelay + 1000);
+            });
+            
+            // 播放背景音乐（微信中可能受限）
+            try {
+                const audio = new Audio('https://music.163.com/song/media/outer/url?id=287035.mp3');
+                audio.volume = 0.3;
+                audio.loop = true;
+                setTimeout(() => audio.play(), 2000);
+            } catch(e) {
+                console.log('音乐播放受限');
+            }
+        });
+        
+        // 保存回忆
+        document.getElementById('save-btn').addEventListener('click', function() {
+            const memoryText = document.getElementById('memory-text').value.trim();
+            if (memoryText) {
+                alert('回忆已封存: ' + memoryText);
+                // 实际应用中这里可以发送到服务器保存
+                localStorage.setItem('lastMemory', memoryText);
+                document.getElementById('memory-input').style.display = 'none';
+            } else {
+                alert('请写下你的回忆');
+            }
+        });
+        
+        // 微信中打开时提示
+        window.onload = function() {
+            const isWeChat = /MicroMessenger/i.test(navigator.userAgent);
+            if (isWeChat) {
+                console.log('微信环境中运行');
+                // 可以添加微信特定的初始化代码
+            }
+        };
+    </script>
+</body>
+</html>
